@@ -1,0 +1,98 @@
+{
+    "log": {
+        "loglevel": "warning"
+    },
+    "inbounds": [
+        {
+            "port": 8080,
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "6e372cf3-7e31-4968-8f2d-c234ed6d072c",
+                        "flow": "xtls-rprx-direct"
+                    }
+                ],
+                "decryption": "none",
+                "fallbacks": [
+                    {
+                        "dest": 3001
+                    },
+                    {
+                        "path": "/6e372cf3-7e31-4968-8f2d-c234ed6d072c-trojan",
+                        "dest": 3002
+                    },
+                    {
+                        "path": "/6e372cf3-7e31-4968-8f2d-c234ed6d072c-vmess",
+                        "dest": 3003
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp"
+            }
+        },
+        {
+            "port": 3001,
+            "listen": "127.0.0.1",
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "6e372cf3-7e31-4968-8f2d-c234ed6d072c"
+                    }
+                ],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "ws",
+                "wsSettings": {
+                    "path": "/6e372cf3-7e31-4968-8f2d-c234ed6d072c-vless"
+                }
+            }
+        },
+        {
+            "port": 3002,
+            "listen": "127.0.0.1",
+            "protocol": "trojan",
+            "settings": {
+                "clients": [
+                    {
+                        "password": "6e372cf3-7e31-4968-8f2d-c234ed6d072c"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "ws",
+                "security": "none",
+                "wsSettings": {
+                    "path": "/6e372cf3-7e31-4968-8f2d-c234ed6d072c-trojan"
+                }
+            }
+        },
+        {
+            "port": 3003,
+            "listen": "127.0.0.1",
+            "protocol": "vmess",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "6e372cf3-7e31-4968-8f2d-c234ed6d072c"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "ws",
+                "security": "none",
+                "wsSettings": {
+                    "path": "/6e372cf3-7e31-4968-8f2d-c234ed6d072c-vmess"
+                }
+            }
+        }
+    ],
+    "outbounds": [
+        {
+            "protocol": "freedom"
+        }
+    ]
+}
